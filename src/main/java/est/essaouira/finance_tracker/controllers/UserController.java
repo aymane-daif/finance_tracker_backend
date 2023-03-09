@@ -1,5 +1,6 @@
 package est.essaouira.finance_tracker.controllers;
 
+import est.essaouira.finance_tracker.dtos.UserDto;
 import est.essaouira.finance_tracker.models.User;
 import est.essaouira.finance_tracker.services.UserService;
 import jakarta.validation.Valid;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto user) {
        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
     }
 

@@ -20,7 +20,6 @@ public class User {
     private String name;
 
     @Column(nullable = false, unique = true)
-    @Email(message = "Email format is invalid")
     private String email;
 
     @Column(nullable = false)

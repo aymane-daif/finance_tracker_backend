@@ -1,5 +1,6 @@
 package est.essaouira.finance_tracker.controllers;
 
+import est.essaouira.finance_tracker.dtos.IncomeDto;
 import est.essaouira.finance_tracker.models.Income;
 import est.essaouira.finance_tracker.models.User;
 import est.essaouira.finance_tracker.services.IncomeService;
@@ -20,21 +21,21 @@ public class IncomeController {
     }
 
     @PostMapping
-    public ResponseEntity<Income> createIncome(@RequestBody Income income) {
+    public ResponseEntity<IncomeDto> createIncome(@RequestBody IncomeDto income) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(incomeService.createIncome(income));
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Income>> getIncomesByUser(@PathVariable Long userId) {
+    public ResponseEntity<List<IncomeDto>> getIncomesByUser(@PathVariable Long userId) {
         User user = new User(userId, null, null, null);
-        List<Income> incomes = incomeService.getIncomesByUser(user);
+        List<IncomeDto> incomes = incomeService.getIncomesByUser(user);
         return ResponseEntity.ok(incomes);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Income> updateIncome(@PathVariable Long id, @RequestBody Income income) {
-        Income updatedIncome = incomeService.updateIncome(id, income);
+    public ResponseEntity<IncomeDto> updateIncome(@PathVariable Long id, @RequestBody IncomeDto income) {
+        IncomeDto updatedIncome = incomeService.updateIncome(id, income);
         return ResponseEntity.ok(updatedIncome);
     }
 

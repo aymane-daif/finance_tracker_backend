@@ -1,5 +1,6 @@
 package est.essaouira.finance_tracker.controllers;
 
+import est.essaouira.finance_tracker.dtos.ExpenseDto;
 import est.essaouira.finance_tracker.models.Expense;
 import est.essaouira.finance_tracker.models.User;
 import est.essaouira.finance_tracker.services.ExpenseService;
@@ -21,19 +22,19 @@ public class ExpenseController {
 
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Expense>> getExpensesByUser(@PathVariable Long userId) {
+    public ResponseEntity<List<ExpenseDto>> getExpensesByUser(@PathVariable Long userId) {
         User user = new User(userId, null, null, null);
         return ResponseEntity.ok(expenseService.getExpensesByUser(user));
     }
     @PostMapping
-    public ResponseEntity<Expense> createExpense(@RequestBody Expense expense) {
+    public ResponseEntity<ExpenseDto> createExpense(@RequestBody ExpenseDto expense) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(expenseService.createExpense(expense));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
-        Expense updatedExpense = expenseService.updateExpense(id, expense);
+    public ResponseEntity<ExpenseDto> updateExpense(@PathVariable Long id, @RequestBody ExpenseDto expense) {
+        ExpenseDto updatedExpense = expenseService.updateExpense(id, expense);
         return ResponseEntity.ok(updatedExpense);
     }
 

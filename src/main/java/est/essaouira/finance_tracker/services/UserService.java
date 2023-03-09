@@ -1,8 +1,10 @@
 package est.essaouira.finance_tracker.services;
 
 
+import est.essaouira.finance_tracker.dtos.UserDto;
 import est.essaouira.finance_tracker.models.User;
 import est.essaouira.finance_tracker.repositories.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,13 +14,15 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private static ModelMapper mapper = new ModelMapper();
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserDto createUser(UserDto user) {
+        User newUser = mapper.map(user, User.class);
+        return mapper.map(userRepository.save(newUser), UserDto.class);
     }
 
     public Optional<User> getUserByEmail(String email) {

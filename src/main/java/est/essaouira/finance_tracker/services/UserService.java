@@ -14,10 +14,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private static ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ModelMapper mapper) {
         this.userRepository = userRepository;
+        this.mapper = mapper;
     }
 
     public UserDto createUser(UserDto user) {

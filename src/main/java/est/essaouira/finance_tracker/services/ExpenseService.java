@@ -20,13 +20,14 @@ public class ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final PaymentMethodRepository paymentMethodRepository;
     private final UserRepository userRepository;
-    private static ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
 
 
-    public ExpenseService(ExpenseRepository expenseRepository, PaymentMethodRepository paymentMethodRepository, UserRepository userRepository) {
+    public ExpenseService(ExpenseRepository expenseRepository, PaymentMethodRepository paymentMethodRepository, UserRepository userRepository, ModelMapper mapper) {
         this.expenseRepository = expenseRepository;
         this.paymentMethodRepository = paymentMethodRepository;
         this.userRepository = userRepository;
+        this.mapper = mapper;
     }
 
     public ExpenseDto createExpense(ExpenseDto expenseDto) {
@@ -37,18 +38,18 @@ public class ExpenseService {
         return getExpenseDto(createdExpense);
     }
 
-    private static Expense getExpenseFromDto(ExpenseDto expenseDto) {
+    private Expense getExpenseFromDto(ExpenseDto expenseDto) {
         return mapper.map(expenseDto, Expense.class);
     }
 
-    private static ExpenseDto getExpenseDto(Expense expense) {
+    private ExpenseDto getExpenseDto(Expense expense) {
         return mapper.map(expense, ExpenseDto.class);
     }
 
     public List<ExpenseDto> getExpensesByUser(User user) {
         return expenseRepository.findByUserOrderByDateDesc(user)
                 .stream()
-                .map(ExpenseService::getExpenseDto)
+                .map(this::getExpenseDto)
                 .collect(Collectors.toList());
     }
 
@@ -66,7 +67,7 @@ public class ExpenseService {
 
     public void deleteExpenseById(long id) {
         expenseRepository.findById(id).orElseThrow(
-                () -> new ExpenseNotFoundException());
+                ExpenseNotFoundException::new);
         expenseRepository.deleteById(id);
     }
 }

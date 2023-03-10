@@ -17,12 +17,13 @@ public class IncomeService {
 
     private final IncomeRepository incomeRepository;
     private final UserRepository userRepository;
-    private static ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
 
 
-    public IncomeService(IncomeRepository incomeRepository, UserRepository userRepository) {
+    public IncomeService(IncomeRepository incomeRepository, UserRepository userRepository, ModelMapper mapper) {
         this.incomeRepository = incomeRepository;
         this.userRepository = userRepository;
+        this.mapper = mapper;
     }
 
     public IncomeDto createIncome(IncomeDto incomeDto) {
@@ -32,18 +33,18 @@ public class IncomeService {
         return getIncomeDto(createdIncome);
     }
 
-    private static IncomeDto getIncomeDto(Income createdIncome) {
+    private IncomeDto getIncomeDto(Income createdIncome) {
         return mapper.map(createdIncome, IncomeDto.class);
     }
 
-    private static Income getIncome(IncomeDto incomeDto) {
+    private Income getIncome(IncomeDto incomeDto) {
         return mapper.map(incomeDto, Income.class);
     }
 
     public List<IncomeDto> getIncomesByUser(User user) {
         return incomeRepository.findByUserOrderByDateDesc(user)
                 .stream()
-                .map(IncomeService::getIncomeDto)
+                .map(this::getIncomeDto)
                 .collect(Collectors.toList());
     }
 
